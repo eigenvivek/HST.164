@@ -1,0 +1,147 @@
+% Packages
+\usepackage{parskip}
+\usepackage{epsfig}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{amstext}
+\usepackage{amsmath}
+\usepackage{xspace}
+\usepackage{hyperref}
+\usepackage{amsthm}
+\usepackage{natbib}
+\usepackage{color}
+\usepackage{cancel}
+\usepackage{bbm}
+\usepackage{optidef}
+\allowdisplaybreaks
+
+% Environments
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[chapter]
+\newtheorem{cor}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}{Proposition}[chapter]
+\newtheorem{obs}{Observation}[chapter]
+
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[chapter]
+
+\theoremstyle{remark}
+\newtheorem{example}{Example}[chapter]
+\newtheorem{exercise}{Exercise}[chapter]
+\newtheorem{remark}{Remark}[chapter]
+\newtheorem{question}{Question}
+\newtheorem{answer}{Answer}
+
+% Statistics
+\renewcommand{\P}{\ensuremath{\mathbb{P}}}
+\renewcommand{\Pr}[1]{\ensuremath{\mathbb{P} \left( #1 \right) }}
+\newcommand{\E}[1]{\ensuremath{\mathbb{E} \left[ #1 \right] }}
+\newcommand{\var}[1]{\ensuremath{\mathrm{Var} \left( #1 \right) }}
+\newcommand{\mse}[1]{\ensuremath{\mathrm{MSE} \left( #1 \right) }}
+\newcommand{\bias}[1]{\ensuremath{\mathrm{Bias} \left( #1 \right) }}
+
+\newcommand{\1}[1]{\ensuremath{\mathbbm 1_{\{#1\}}}}
+
+\newcommand{\Y}{\ensuremath{\mathbf Y}}
+\newcommand{\y}{\ensuremath{\mathbf y}}
+
+\newcommand{\iid}{\ensuremath{\stackrel{\mathrm{iid}}{\sim}}}
+\newcommand{\ind}{\perp \!\!\! \perp}
+
+\newcommand{\bern}{\mathrm{Bernoulli}}
+\newcommand{\pois}{\mathrm{Poisson}}
+\newcommand{\mult}{\mathrm{Multinomial}}
+
+% Fields
+\newcommand{\R}{\ensuremath{\mathbb R}}
+\newcommand{\C}{\ensuremath{\mathbb C}}
+\newcommand{\N}{\ensuremath{\mathbb N}}
+\newcommand{\Q}{\ensuremath{\mathbb Q}}
+\newcommand{\F}{\ensuremath{\mathbb F}}
+\newcommand{\K}{\ensuremath{\mathbb K}}
+\newcommand{\Z}{\ensuremath{\mathbb Z}}
+\newcommand{\B}{\ensuremath{\mathcal B}}
+\renewcommand{\H}{\ensuremath{\mathcal H}}
+
+% Useful things
+\newcommand{\G}{\ensuremath{\mathcal G}}
+\newcommand{\e}{\epsilon}
+\newcommand{\sse}{\subseteq}
+\newcommand{\union}{\cup}
+\newcommand{\ra}{\rightarrow}
+\newcommand{\ceil}[1]{\ensuremath{\left\lceil#1\right\rceil}}
+\newcommand{\floor}[1]{\ensuremath{\left\lfloor#1\right\rfloor}}
+\newcommand{\ip}[2]{\left\langle #1, #2\right\rangle}
+\DeclareMathOperator*{\argmax}{arg\,max\ }
+\DeclareMathOperator*{\argmin}{arg\,min\ }
+\newcommand{\rr}{\stackrel{RR}{\sim}}
+\newcommand{\set}[2]{ \left\{ #1 \;:\; #2 \right\} }
+\newcommand{\T}{\ensuremath{\mathbf{T}}}
+
+% Vectors and matrices
+\newcommand{\zero}{\vec{0}}
+\newcommand{\ones}{\vec{1}}
+\newcommand{\norm}[1]{\lVert#1\rVert}
+
+% Operators
+\DeclareMathOperator{\vspan}{span}
+\DeclareMathOperator{\im}{\mathrm{im}}
+\DeclareMathOperator{\rank}{\mathrm{rank}}
+\DeclareMathOperator{\RREF}{\mathrm{RREF}}
+\DeclareMathOperator{\trace}{\mathrm{trace}}
+\DeclareMathOperator{\diag}{\mathrm{diag}}
+
+% Misc symbols
+\DeclareRobustCommand\iff{\;\Longleftrightarrow\;}
+\DeclareRobustCommand\implies{\;\Longrightarrow\;}
+\DeclareRobustCommand\limplies{\;\Longleftarrow\;}
+\DeclareRobustCommand{\contradiction}{\ensuremath{{\Rightarrow\mspace{-2mu}\Leftarrow}}}
+
+%%% Book formatting
+
+%% Reformat the title
+\makeatletter
+\renewcommand{\maketitlepage}{
+    \begingroup
+    \setlength{\parindent}{0pt}
+    {\fontsize{24}{24}\selectfont\textit{\@author}\par}
+    \vspace{1.75in}{\fontsize{36}{54}\selectfont\@title\par}
+    \vspace{0.5in}{\fontsize{14}{14}\selectfont\textsf{\smallcaps{\@date}}\par}
+    \vfill{\fontsize{14}{14}\selectfont\textit{\@publisher}\par}
+    \thispagestyle{empty}
+    \endgroup
+}
+\makeatother
+
+%% Add numbers to the chapters
+\setcounter{secnumdepth}{2}
+
+\titleformat{\chapter}
+    {\huge\rmfamily\itshape}
+    {Lecture \thechapter.}
+    {8pt}
+    {}
+    []
+
+%% Reformat table of contents
+\usepackage{titlesec}
+\usepackage{titletoc}
+
+\renewcommand{\chaptername}{Lecture}
+
+\titlecontents{part}
+    [0pt]
+    {\addvspace{0.25\baselineskip}}
+    {\allcaps{Part~\thecontentslabel}}
+    {\allcaps{Part~\thecontentslabel}}
+    {}
+    [\vspace*{0.5\baselineskip}]
+    
+\titlecontents*{chapter}
+    [4em]
+    {}
+    {\chaptername~ \thecontentslabel\quad}
+    {}
+    {\hfill\contentspage}
+    [\vspace*{0.5\baselineskip}]
