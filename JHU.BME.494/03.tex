@@ -1,0 +1,70 @@
+\chapter{Linear System Analysis for Optical Imaging Systems}
+\label{chpt:linsys}
+
+\section{1D Linear Systems}
+
+In signal processing, systems are essentially transformations between function spaces, where signals (either discrete or continuous) are elements of these function spaces.
+If such a transformation is linear, we call it a linear system.
+
+\begin{defn}[Impulse response]
+\label{def:impulse-response}
+Given a linear system $\mathcal H$, $\mathcal H(\delta(t)) = h(t)$ is the impulse response of the system.
+\end{defn}
+
+\begin{defn}[Convolution]
+Given a linear system $\mathcal H$ and an input signal $x(t)$, we can represent its output using a convolution:
+\begin{align*}
+    \mathcal H(x(t))
+    &= \mathcal H \left(\int_{-\infty}^\infty x(\tau) \delta(t - \tau) \d\tau \right) \tag{Sampling property.} \\
+    &= \int_{-\infty}^\infty \mathcal H(x(t) \delta(t-\tau)) \d\tau \tag{$\mathcal H$ is linear.} \\
+    &=\int_{-\infty}^\infty x(t) \mathcal H(\delta(t-\tau)) \d\tau \tag{$x(t)$ is constant.} \\ 
+    &=\int_{-\infty}^\infty x(t) h(t-\tau) \d\tau \tag{Defn \ref{def:impulse-response}.} \\ 
+    &= x(t) * h(t) \\
+    &\equiv y(t) \,.
+\end{align*}
+Equivalently, in the frequency domain, we can say 
+\begin{equation}
+    Y(f) = H(f) X(f) = \mathcal F\{y(t)\} \,.
+\end{equation}
+\end{defn}
+
+\begin{defn}[LTI Systems]
+A linear time-invariant (LTI) system is a particular type of linear system with an additional property.
+If $x_1$ and $x_2$ are two related signals such that $x_2(t) = x_1(t-t_0)$, then $y_2(t) = \mathcal H(x_2(t)) = \mathcal H(x_1(t-t_0)) = y_1(t)$.
+\end{defn}
+
+If we assume that every component of an imaging system is able to be modeled as an LTI system, we can easily chain components in either domain:
+\begin{align*}
+    h(t) &= h_1(t) * h_2(t) * \cdots * h_k(t) \\
+    H(f) &= H_1(f) H_2(f) \cdots H_k(f)
+\end{align*}
+
+\begin{defn}[Cross-correlation]
+Cross-correlation is a measure of similarity between two signals $x_1$ and $x_2$:\footnote{This looks very similar to the convolution operator -- in fact, cross-correlation is equivalent to convolution when one of the signals is conjugated and time-reversed.}
+\begin{equation}
+    (x_1 \star x_2)(t) = \int_{-\infty}^\infty \overline{x_1}(\tau)x_2(t+\tau) \d\tau \,,
+\end{equation}
+where $\overline{x_1}$ represents the complex conjugate of $x_1$.
+\end{defn}
+
+\begin{defn}[Autocorrelation]
+Autocorrelation is the cross-correlation of a signal with itself.
+\end{defn}
+
+\begin{theorem}[Wiener-Khinchin]
+The autocorrelation of a signal is equal to the Fourier transform of the absolute value squared of the Fourier transform of the signal:
+\begin{equation}
+    \mathcal F\{|X(f)|^2\}(t) = (x \star x)(t) \,.
+\end{equation}
+\end{theorem}
+
+\section{2D Linear Systems}
+
+In 2D systems, the impulse response is commonly referred to as the \textbf{point-spread function} (PSF) since now the impulse represents a single point in 2D space.
+
+Convolutions also have a higher dimensional definition:
+\begin{equation}
+    (h * x)(u, v) = \int_{-\infty}^\infty \int_{-\infty}^\infty x(u', v') h(u - u', v - v') \d u' \d v' \,,
+\end{equation}
+where $u, v$ are now spatial coordinates.
+Analogous definitions for cross-correlation and autocorrelatoin are also similarly defined.

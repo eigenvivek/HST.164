@@ -1,0 +1,42 @@
+\chapter{Digital Signal Processing}
+\label{chpt:dsp}
+
+\section{The Fourier Transform}
+
+To work with signals in a computation environment, we need to first represent a signal using a finite number of parameters.
+One way to do this is with \textbf{basis functions.}
+If we use sine and cosine as our basis functions\footnote{This particular set of basis functions is called the Fourier basis.}, and our signal is periodic, then the Fourier transform is a particularly good representation.
+
+\begin{defn}[Fourier Series]
+Given a signal $x(t)$ with period $L$, we can represent it using the coefficients $a_0, a_k, b_k$ for $k=1,\dots,\infty$ as
+\begin{equation}
+\label{eqn:fourier}
+    x(t) = \frac{1}{2}a_0 + \sum_{k=1}^\infty a_k \cos \frac{2k\pi t}{L} + \sum_{k=1}^\infty b_k \sin \frac{2k\pi t}{L} \,.
+\end{equation}
+\end{defn}
+
+\begin{theorem}
+The functions in the Fourier basis are orthonormal with respect to the inner product $\ip{f}{g} = \frac{2}{L} \int_{-\frac{L}{2}}^{\frac{L}{2}} f(t)g(t) \d{t} \,.$
+\end{theorem}
+
+\begin{cor}[Fourier Transform]
+Because the Fourier basis is orthonormal, we can calculate the coefficients for a particular $L$-periodic function $x(t)$ as an orthogonal projection:
+\begin{align*}
+    a_0 &= \frac{2}{L} \int_{-\frac{L}{2}}^{\frac{L}{2}} x(t) x(t) \d{t} \\
+    a_k &= \frac{2}{L} \int_{-\frac{L}{2}}^{\frac{L}{2}} x(t) \cos \frac{2k\pi t}{L} \d{t} \\
+    b_k &= \frac{2}{L} \int_{-\frac{L}{2}}^{\frac{L}{2}} x(t) \sin \frac{2k\pi t}{L} \d{t} \,.
+\end{align*}
+This operation is known as the Fourier Transform.
+\end{cor}
+
+To unify the sines and cosines, we can use Euler's formula to re-express Equation \ref{eqn:fourier} as
+\begin{equation}
+    x(t) = \sum_{k=-\infty}^\infty A_k e^{i (2 \pi k t) / L} \,,
+\end{equation}
+where the coefficients $A_k = \frac{1}{L} \int_{-\frac{L}{2}}^{\frac{L}{2}} x(t) e^{-i (2 \pi k t) / L} \d{t} \,.$
+
+Finally, to generalize, we let $L \rightarrow \infty \implies k/L \rightarrow f$ and arrive at the continuous Fourier Transform and its inverse:
+\begin{align*}
+    X(f) &= \int_{-\infty}^\infty x(t) e^{-2 \pi i f t} \d t \\
+    x(t) &= \int_{-\infty}^\infty X(f) e^{2 \pi f t} \d f \,.
+\end{align*}
