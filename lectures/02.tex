@@ -1,0 +1,31 @@
+\chapter{Fourier Fundamentals}
+
+\section{Basics of the Fourier Transform}
+
+\begin{defn}[$K$-space]
+$K$-space is a 2D/3D Fourier transform of a measured MR image.
+That is, if we have two frequencies in 2D $K$-space, $f_x$ and $f_y$, the magnitude $K(f_x, f_y)$ gives us the coefficient for the basis function $e^{-i 2\pi(f_x x + f_y y)}$.
+\end{defn}
+
+\begin{theorem}
+For natural images, the largest value in $K$-space always occurs at the origin.
+\end{theorem}
+\begin{proof}
+First, simplify the Fourier transform:
+\begin{align*}
+    F(\omega)
+    &= \int_\R f(t) e^{-i\omega t} \d t \\
+    &\leq \left| \int_\R f(t) e^{-i\omega t} \d t \right| \\
+    &\leq \int_\R |f(t)| |e^{-i\omega t}| \d t \\
+    &= \int_\R |f(t)| \d t \tag{$e^{-i\omega t}$ is the unit circle.} \,.
+\end{align*}
+Since $f(t)$ represents a natural image, it is always non-negative.
+Therefore, for all $\omega$, $F(\omega) \leq \int_\R f(t) \d t = F(0)$.
+\end{proof}
+
+Some important Fourier transform relationships:
+\begin{itemize}
+    \item Rect $\stackrel{\mathcal F}{\longrightarrow}$ sinc
+    \item Sinc $\stackrel{\mathcal F}{\longrightarrow}$ rect
+    \item Gaussian $\stackrel{\mathcal F}{\longrightarrow}$ Gaussian\footnote{Here, Gaussian refers to a signal of the form $e^{-at^2}$}
+\end{itemize}

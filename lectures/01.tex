@@ -1,0 +1,149 @@
+\chapter{Magnetic Resonance Imaging}
+
+\newthought{This lecture covers} basic properties of magnetic resonance (MR) images and physics-based derivation of the principles of MRI.
+
+\section{Properties of MR Images}
+
+We focus on three key properties of MR images:
+
+\begin{itemize}
+    \item \textbf{Spatial Resolution:} What is the dimension of every voxel in the images (units of pixels per unit volume)?
+    \item \textbf{Temporal Resolution:} How many samples can we acquire per second?
+    \item \textbf{Signal-to-Noise Ratio:} SNR is directly proportional the amount of signal in a voxel. This is inversely proportional to spatial and temporal resolution, and directly proportional to acquisition time.
+\end{itemize}
+
+\begin{defn}[SNR]
+The signal-to-noise ratio (SNR) is defined as $S / \sigma_\epsilon$, where $S$ is the signal and $\sigma_\epsilon$ is the standard deviation of the image noise.
+It can also be defined as
+\begin{equation}
+    \text{SNR} = \frac{\text{FOV}_x}{N_x} \cdot \frac{\text{FOV}_y}{N_y} \cdot \frac{\text{FOV}_z}{N_z} \sqrt{\frac{N_y N_z N_\text{EX}}{1 / \Delta T}} \,,
+\end{equation}
+where $\text{FOV}$ is the field-of-view, $N_x$ is the number of pixels in the $x$-direction, $N_\text{EX}$ is the number of excitations, and $\Delta T$ is the time sampling interval.\footnote{Note that $\frac{N_x}{\text{FOV}_x}$ is the $x$-direction spatial resolution, demonstrating that inverse relationship with SNR.}
+\end{defn}
+
+\begin{remark}
+We assume that both signal and noise variance add linearly, so the SNR for $k$ measurements would be
+\begin{equation}
+    \text{SNR}_k = \frac{kS}{\sqrt{k\sigma^2_\epsilon}} = \sqrt k ~\text{SNR} \,.
+\end{equation}
+\end{remark}
+
+\begin{defn}[Volume Averaging]
+A phenomena that occurs when voxel size is larger than the object being imaged.\footnote{I.e., poor spatial resolution.}
+\end{defn}
+
+\begin{defn}[Impulse Response]
+We can model imaging systems as linear time-invariant (LTI) systems. The impulse response\footnote{The response of the system to a delta function input.} is also called the ``point-spread function'' (PSF) in imaging systems.\footnote{See Lecture \ref{chpt:linsys}.}
+\end{defn}
+
+\section{Fundamental MR Physics}
+
+\subsection{Nuclear Magnetic Resonance (NMR)}
+
+MR is based on NMR, a fundamental property of certain atoms:
+
+\begin{defn}[Nuclear Magnetic Resonance]
+Certain atomic nuclei demonstrate the ability to absorb and re-emit \textbf{radiofrequency energy} when placed in a \textbf{magnetic field}.
+\end{defn}
+
+This property is leveraged to create MR images as follows:
+\begin{enumerate}
+    \item A strong, homogeneous magnetic field $B_0$ is applied, forcing nuclei to align
+    \item A radiofrequency (RF) pulse is applied, forcing nuclei out of alignment with $B_0$
+    \item The nuclei precess, giving off their own RF signal by the NMR phenomenon (i.e., \textbf{T2 relaxation})
+    \item The nuclei eventually realign with $B_0$ (i.e., \textbf{T1 relaxation})
+\end{enumerate}
+The T1 and T2 relaxation times above are different for different tissues in the body, producing contrast in MR images.\footnote{Derived in \S\ref{sec:t1t2}.}
+
+MR focuses on the Hydrogen (H) atom because of its abundance in the body.
+The property of H nuclei (i.e., protons) that we care about is spin:
+\begin{defn}[Spin]
+The spin of a proton quantifies its angular momentum and magnetic moment.\footnote{This allows the proton to act as a tiny bar magnet.}
+\end{defn}
+\begin{defn}[Magnetic moment]
+The strength and orientation of the magnetic field produced by an object, described as $\mu = \bar h S \gamma$, where $\gamma$ is the gyromagnetic ratio.\footnote{$\gamma$ is specific to the atom.}
+\end{defn}
+If a spinning proton is placed in a magnetic field, the proton's magnetic moment tries to align the proton with the field. However, because the proton is spinning, it \textit{precesses}\footnote{Like a top not falling to gravity.} about the alignment of the field, producing a variable magnetic field.\footnote{This is exactly the NMR phenomenon.}
+
+\subsection{Measuring NMR}
+
+If you placed a coil of wire near the precessing proton, the changing magnetic field would produce a time-varying magnetic flux $\Phi(t)$ through the coil.
+Specifically, $\Phi(t) = -\sin(\omega t)$, where the frequency $\omega$ is exactly the angular momentum of the proton, which is given by the Larmor equation:
+\begin{equation}
+    \label{eqn:larmor}
+    \omega = \gamma B_0\,.
+\end{equation}
+Additionally, this precession induces a variable electrical current that is measurable by Lenz's law:
+\begin{equation}
+    \label{eqn:lenz}
+    \varepsilon = S(t) = -\frac{\d \Phi}{\d t} \,,
+\end{equation}
+where $\varepsilon$ is the change in voltage in the wire.
+This now gives us a mathematical expression for our measured signal:
+% TODO: why the sign change here? convention?
+\begin{align}
+    S(t)
+    &= \frac{\d}{\d t} \sin(\omega t) \tag{By Eqn \ref{eqn:lenz}.} \\
+    &= \omega \cos(\omega t) \tag*{} \\
+    &= \gamma B_0\cos(\omega t) \tag{By Eqn \ref{eqn:larmor}.} \\
+    &= N \sin{(\theta)} \gamma B_0\cos(\omega t) \,. \label{eqn:precess}
+\end{align}
+In the final line, we have introduced two terms:
+$N$, which represents the number of protons contributing the the magnetization\footnote{More on this in \S\ref{sec:boltzmann} }, and $\theta$, which represents the \textit{flip angle} or the angle between the proton's magnetic moment and $B_0$.
+The flip angle parameterizes the transition between the two discrete spin states (spin-up and spin-down), and the closer this angle is to 90 degrees, the stronger the signal measured by the coils, $S(t)$.
+
+\subsection{T1 and T2 Relaxation}
+\label{sec:t1t2}
+
+While the $N$ protons all start with the same spin angle, they don't spin coherently forever.\footnote{I.e., the signal in Equation \ref{eqn:precess} is dampened as protons gradually get out of phase with one another.}
+The rate at which protons go out of phase is given by a decay term in
+\begin{equation}
+    \label{eqn:FID}
+    S(t) = N \sin{(\theta)} \gamma B_0\cos(\omega t) e^{-t / T_2} \,,
+\end{equation}
+where T2 is an intrinsic property for each tissue.\footnote{As protons gradually go out of phase, their magnetic moments cancel each other out, asymptotically driving $S(t)$ to zero.}
+\begin{defn}[Free-induction decay]
+Equation \ref{eqn:FID} is referred to as the free-induction decay (FID) signal for a particular tissue.
+\end{defn}
+
+T2 relaxation measures the rate of signal decay in the \textit{transverse plane}.\footnote{The plane orthogonal to $B_0$.}
+Note that as signal decays in the transverse plane, it grows in the \textit{longitudinal plane}.\footnote{The plane parallel to $B_0$.}
+T1 relaxation measures this rate.
+To figure out what this signal grows \textit{to}, we need to take a detour into Boltzmann statistics.
+
+\subsection{The Boltzmann Distribution}
+\label{sec:boltzmann}
+
+We briefly mentioned that spin-$\frac{1}{2}$ nuclei exist in one of two states: spin-up $| \psi_{\uparrow} \rangle$ and spin-down $| \psi_{\downarrow} \rangle$.
+Spin-up nuclei (i.e., those aligned with the field) have slightly lower energy than spin-down nuclei, and thus nuclei are more likely to exist in this state.\footnote{A defining principle of quantum mechanics is that, for $T > 0$ (absolute), the probability of nuclei existing in exactly one state is zero.}
+When a pair of nuclei in different spin states interact, their magnetic moments cancel out.
+The total magnetization $M_0$ is then given by the number of spin-up nuclei that do not have a spin-down partner.
+The proportion of nuclei in each state is given by the Boltzmann (aka Gibbs) distribution:
+\begin{defn}[Boltzmann distribution]
+For spin states $i \in \{ \uparrow, \downarrow \}$, the probability of being in state $i$ is
+\begin{equation}
+    \Pr{i} = \frac{e^{- E_i / kT}}{\sum_i e^{- E_i / kT}} \,,
+\end{equation}
+where $E_i$ is the energy of the $i$-th state, $k$ is the Boltzmann constant, and $T$ is the temperature.\footnote{Note the similarity to the logistic distribution.}
+\end{defn}
+
+Defining the polarization of the spins as $P = \Pr{\uparrow} - \Pr{\downarrow}$, we can augment Equation \ref{eqn:precess} to be
+\begin{equation}
+    S(t) = N P \sin{(\theta)} \gamma B_0\cos(\omega t) \,,
+\end{equation}
+where here, $N$ represents the total number of protons in the system.
+
+\subsection{Spin Echo and Repetition Times}
+
+Using the definition of the total magnetization $M_0$, we can define the longitudinal and transverse components of the magnetic field strength:
+\begin{align}
+    M_L(t) &= M_0 (1 - e^{-t / T_1}) \\
+    M_T(t) &= M_0 e^{-t / T_2}
+\end{align}
+After delivering a 90 degree excitation pulse, strength of the transverse signal is measured at some \textit{time of echo}, $TE < T_2$.
+The system is then allowed to recover longitudinal magnetization by processing for a \textit{time of repetition}, $TR < T_1$, and the process is repeated over and over.
+This yields the ultimate MR contrast equation:
+\begin{equation}
+    S(TE, TR) = M_0 (1 - e^{- TR / T_1}) e^{- TE / T_2} \,.
+\end{equation}
+Depending on which time constant is prioritized, we end up with either a T1- or a T2-weighted MRI.
